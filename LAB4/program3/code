@@ -1,0 +1,61 @@
+use lab4
+switched to db lab4
+> db.createCollection("Country")
+{ "ok" : 1 }
+> db.Country.insert({_id:1,Cities:["New York","Detroit"]})
+WriteResult({ "nInserted" : 1 })
+> db.Country.insert({_id:2,Cities:["Bangalore","Mumbai"]})
+WriteResult({ "nInserted" : 1 })
+> db.Country.insert({_id:3,Cities:["Toronto","Vancouver"]})
+WriteResult({ "nInserted" : 1 })
+> db.Country.insert({_id:4,Cities:["London","Manchester"]})
+WriteResult({ "nInserted" : 1 })
+> db.Country.find()
+{ "_id" : 1, "Cities" : [ "New York", "Detroit" ] }
+{ "_id" : 2, "Cities" : [ "Bangalore", "Mumbai" ] }
+{ "_id" : 3, "Cities" : [ "Toronto", "Vancouver" ] }
+{ "_id" : 4, "Cities" : [ "London", "Manchester" ] }
+> db.Country.find().limit(1)
+{ "_id" : 1, "Cities" : [ "New York", "Detroit" ] }
+> db.Country.find().skip(2).limit(2)
+{ "_id" : 3, "Cities" : [ "Toronto", "Vancouver" ] }
+{ "_id" : 4, "Cities" : [ "London", "Manchester" ] }
+> db.Country.update({_id:2},{$push:{population:{Bangalore:45,Mumbai:50}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Country.find()
+{ "_id" : 1, "Cities" : [ "New York", "Detroit" ] }
+{ "_id" : 2, "Cities" : [ "Bangalore", "Mumbai" ], "population" : [ { "Bangalore" : 45, "Mumbai" : 50 } ] }
+{ "_id" : 3, "Cities" : [ "Toronto", "Vancouver" ] }
+{ "_id" : 4, "Cities" : [ "London", "Manchester" ] }
+>  db.Country.update({_id:3},{$pop:{Cities:1}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Country.find()
+{ "_id" : 1, "Cities" : [ "New York", "Detroit" ] }
+{ "_id" : 2, "Cities" : [ "Bangalore", "Mumbai" ], "population" : [ { "Bangalore" : 45, "Mumbai" : 50 } ] }
+{ "_id" : 3, "Cities" : [ "Toronto" ] }
+{ "_id" : 4, "Cities" : [ "London", "Manchester" ] }
+> db.Country.update({Cities:"London"},{$pull:{Cities:'London'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Country.find()
+{ "_id" : 1, "Cities" : [ "New York", "Detroit" ] }
+{ "_id" : 2, "Cities" : [ "Bangalore", "Mumbai" ], "population" : [ { "Bangalore" : 45, "Mumbai" : 50 } ] }
+{ "_id" : 3, "Cities" : [ "Toronto" ] }
+{ "_id" : 4, "Cities" : [ "Manchester" ] }
+> db.Country.update({_id:1},{$set:{'Cities.2':'Pheonix'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Country.find()
+{ "_id" : 1, "Cities" : [ "New York", "Detroit", "Pheonix" ] }
+{ "_id" : 2, "Cities" : [ "Bangalore", "Mumbai" ], "population" : [ { "Bangalore" : 45, "Mumbai" : 50 } ] }
+{ "_id" : 3, "Cities" : [ "Toronto" ] }
+{ "_id" : 4, "Cities" : [ "Manchester" ] }
+> db.Country.update({_id:2},{$addToSet:{Cities:"Hyderabad"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Country.find()
+{ "_id" : 1, "Cities" : [ "New York", "Detroit", "Pheonix" ] }
+{ "_id" : 2, "Cities" : [ "Bangalore", "Mumbai", "Hyderabad" ], "population" : [ { "Bangalore" : 45, "Mumbai" : 50 } ] }
+{ "_id" : 3, "Cities" : [ "Toronto" ] }
+{ "_id" : 4, "Cities" : [ "Manchester" ] }
+>
+
+
+
