@@ -1,0 +1,19 @@
+## BDA-lab 7 : Hadoop Word count program ##
+## Commands ##
+
+su hduser
+cd /usr/local/hadoop/sbin/
+./start-dfs.sh
+./start-yarn.sh
+jps
+cd ~
+hadoop fs -ls /
+hadoop fs -mkdir /rgs1
+hadoop fs -copyFromLocal /home/shehyaaz/Documents/lab7/text.txt /rgs1/text.txt
+hadoop fs -ls /rgs1
+## executing the program ##
+hadoop jar /home/shehyaaz/Documents/lab7/wordcount.jar WordCount /rgs1/text.txt /rgs1/output/
+hadoop fs -ls /rgs1/output
+hadoop fs -cat /rgs1/output/part-r-00000
+hadoop fs -copyToLocal /rgs1/output/part-r-00000 $HOME/wordcount-output.txt
+./usr/local/hadoop/sbin/stop-all.sh
